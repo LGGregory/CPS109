@@ -3,14 +3,13 @@ package snowman;
 import java.util.*;
 import java.util.regex.*;
 
-
 /**
  * Snowman Player
  *
  * @author Liam Gregory
  * @version Entropius 3.1 (6.1)
  */
-public class SnowmanPlayerVengeance {
+public class SnowmanPlayer {
 
     private static ArrayList<String> wordList;                                                                          // ArrayList containing every word 
     private static ArrayList<String> currentList;                                                                       // ArrayList containing the words current round
@@ -30,8 +29,7 @@ public class SnowmanPlayerVengeance {
     private static int guessNumber;
 
     /**
-     * Initializes some maps. Filters wordLists by length for faster use later.
-     * Analyzes a quick first guess for each word length.
+     * Initializes some maps. Filters wordLists by length for faster use later. Analyzes a quick first guess for each word length.
      *
      * @param words an array containing every valid word
      * @param minLength the minimum length of words in words
@@ -92,9 +90,9 @@ public class SnowmanPlayerVengeance {
         }
 
         // Resets all per Guess maps.
-        clearLetterOccurrence();
-        clearLetterNonOccurrence();
-        clearLetterEntropy();
+        clearMap(letterOccurrence, 0);
+        clearMap(letterNonOccurrence,0);
+        clearMap(letterEntropy,0.0);
 
         guessedSaved = previousGuesses;
         char guess;
@@ -152,8 +150,7 @@ public class SnowmanPlayerVengeance {
     }
 
     /**
-     * Adds the letter information in the given word to the global maps
-     * letterNonOccurrence and letterOccurrence
+     * Adds the letter information in the given word to the global maps letterNonOccurrence and letterOccurrence
      *
      * @param word the word
      */
@@ -169,8 +166,7 @@ public class SnowmanPlayerVengeance {
 //TODO 
 
     /**
-     * Filters out words from an ArrayList that do not match the current pattern
-     * by means of a regex term given
+     * Filters out words from an ArrayList that do not match the current pattern by means of a regex term given
      *
      * @param currList the ArrayList
      * @param regexPattern the Regex Pattern
@@ -190,9 +186,7 @@ public class SnowmanPlayerVengeance {
     }
 
     /**
-     * Finds each unique pattern of a given character in the global
-     * ArrayList<String> currentList. Returns a HashMap of the number of
-     * instances of each indexed to a unique hash of the pattern.
+     * Finds each unique pattern of a given character in the global ArrayList<String> currentList. Returns a HashMap of the number of instances of each indexed to a unique hash of the pattern.
      *
      * @param testee the character to be checked
      * @return a map containing the instances of each pattern
@@ -219,9 +213,8 @@ public class SnowmanPlayerVengeance {
     }
 
     /**
-     * Finds the information gained from guessing a given letter, then weighs it
-     * by the possibility the guess is wrong. Then does some cargo cult
-     * programming because it just wasn't working how I thought it should.
+     * Finds the information gained from guessing a given letter, then weighs it by the possibility the guess is wrong. Then does some cargo cult programming because it just wasn't working how I
+     * thought it should.
      *
      * @param pattern the pattern in the form "***x**"
      * @param testee the character to be tested
@@ -259,33 +252,16 @@ public class SnowmanPlayerVengeance {
 
     }
 
-// The two functions called most often are luckily embarassingly parallel
-// Use STREAM? current functional might not be best? Collections.nCopies? TPDO
-    /**
-     * Resets all values in letterOccurrence to 0
-     */
-    private static void clearLetterOccurrence() {
-        letterOccurrence.entrySet().forEach((entry) -> {
-            entry.setValue(0);
-        });
-    }
-
-    /**
-     * Resets all values in letterNonOccurrence to 0
-     */
-    private static void clearLetterNonOccurrence() {
-        letterNonOccurrence.entrySet().forEach((entry) -> {
-            entry.setValue(0);
-
-        });
-    }
-
-    /**
-     * Resets all values in letterEntropy to 0.0
-     */
-    private static void clearLetterEntropy() {
-        letterEntropy.entrySet().forEach((entry) -> {
-            entry.setValue(0.0);
+   /**
+    * Sets all values in a given map to a specific value.
+    * 
+    * @param <T> the type of the value of the map
+    * @param map the map to be manipulated
+    * @param value the value to be entered
+    */
+    private static <T> void clearMap(Map<?, T> map, T value) {
+        map.entrySet().forEach((entry) -> {
+            entry.setValue(value);
         });
     }
 
@@ -312,8 +288,7 @@ public class SnowmanPlayerVengeance {
     }
 
     /**
-     * Fills wordListByLength with ArrayLists, each containing the length of
-     * word that is the index value of the list.
+     * Fills wordListByLength with ArrayLists, each containing the length of word that is the index value of the list.
      */
     private static void populateLengthList() {
         for (int i = minLengthSaved; i <= maxLengthSaved; i++) {
@@ -325,8 +300,7 @@ public class SnowmanPlayerVengeance {
     }
 
     /**
-     * For each value [min, max], returns the most occurrent letter in all words
-     * with that length in an array
+     * For each value [min, max], returns the most occurrent letter in all words with that length in an array
      *
      *
      * @param passedList ArrayList containing every word
